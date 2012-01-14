@@ -70,7 +70,7 @@ class BinSearch extends \Kata\Core\KataAbstract {
     }
 
     /**
-     * Implements binary search iteratively
+     * Implements binary search iteratively non-bitwise division
      */
     public function binSearchIterative($haystack, $needle) {
         $left = 0;

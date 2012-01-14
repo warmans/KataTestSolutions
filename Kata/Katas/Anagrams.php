@@ -51,6 +51,9 @@ class Anagrams extends \Kata\Core\KataAbstract {
 		
     }
 
+	/**
+	 * Process the file line-by line. Do not load data into an array.
+	 */
     public function lineByLine($anagramSeed) {
         
         $fileinfo = new \SplFileInfo(RESOURCE.'wordlist.txt');
@@ -94,7 +97,11 @@ class Anagrams extends \Kata\Core\KataAbstract {
         
         return $matchedWords;
     }
-    
+	
+    /**
+	 * Process the file line-by line. Do not load data into an array. This time with decreased duplication of work.
+	 * in string functions. Reduces execution time by around 1 second.
+	 */
     public function lineByLineImproved($anagramSeed) {
         
         $fileinfo = new \SplFileInfo(RESOURCE.'wordlist.txt');
@@ -132,6 +139,9 @@ class Anagrams extends \Kata\Core\KataAbstract {
         return $matchedWords;
     }
     
+	/**
+	 * Same as above but preloading data into an array. No performance benefit.
+	 */
     public function preloadArray($anagramSeed) {
         
         $fileinfo = new \SplFileInfo(RESOURCE.'wordlist.txt');
@@ -172,5 +182,5 @@ class Anagrams extends \Kata\Core\KataAbstract {
         
         return $matchedWords;
     }
-		
-}z
+	
+}
