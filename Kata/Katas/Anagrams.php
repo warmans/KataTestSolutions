@@ -174,4 +174,4 @@ class Anagrams extends \Kata\Core\KataAbstract {
         return $matchedWords;
     }
 		
-}
+}z
