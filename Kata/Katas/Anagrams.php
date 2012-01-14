@@ -3,13 +3,8 @@
 namespace Kata\Katas;
 
 /**
- * Kata based on /r/php post
- * 
- * Create a script that takes a string for input, and from that string, produces all other words 
- * (based on a dictionary or list of other possible words) that you can create from the letters of that string.
- * Note, you choose to leave out letters, but you may not repeat any letters unless they appear multiple times in 
- * the input string.
- * 
+ * Example Class with three versions of Binary Search. Only public methods are run.
+ * Methods can be disabled with a @enabled: false tag in the method Doc.
  */
 class Anagrams extends \Kata\Core\KataAbstract {
 
@@ -36,14 +31,147 @@ class Anagrams extends \Kata\Core\KataAbstract {
             array('a', 'b', 'ba'), 
             array('ab'))
         );
-                 
+        
+        //more tests to test execution time. Result word lists are too long to realistically test exact matches for
+        
+        /*
+    
+        $testSuite->addTest(\Kata\Core\Test::build("t.ammocoetiform",
+            array(), 
+            array('ammocoetiform'))
+        );
+        
+        $testSuite->addTest(\Kata\Core\Test::build("t.undenominationalize",
+            array(), 
+            array('undenominationalize'))
+        );
+         */    
+        
         $this->setTestSuite($testSuite);	
         parent::_setUp();
 		
     }
 
-    public function mySolution($startingWord) {
-        //do something
+    public function lineByLine($anagramSeed) {
+        
+        $fileinfo = new \SplFileInfo(RESOURCE.'wordlist.txt');
+        $file = $fileinfo->openFile('r');
+                
+        $matchedWords = array();
+
+        //filter any words longer than the requested word, any possible words convert to array. Don't store seed word.
+        foreach($file as $line):
+            
+            //kill whitespace
+            $line = trim($line);
+            
+            //word is empty or too long or the the seed - skip
+            if(strlen($line) == 0 || strlen($line) > strlen($anagramSeed) || $line == $anagramSeed){
+                continue;
+            }
+        
+            $word = str_split($line);           
+            $matchedLetters = 0;
+            $letterPool = str_split($anagramSeed);
+            
+            //compare all it's letters against the anagram seed
+            foreach($word as $key=>$letter):
+                
+                $foundLetterKey = array_search($letter, $letterPool); 
+                
+                if($foundLetterKey !== FALSE){
+                    //once a letter has been used remove it from the possible letters to prevent matches re-using letters
+                    unset($letterPool[$foundLetterKey]);
+                    //note how many letters have been matched in this word
+                    $matchedLetters++;
+                }
+            endforeach;
+            
+            //all letters of the current word matched the anagram seed  - this is an anagram or sub-word
+            if($matchedLetters == count($word)){
+                $matchedWords[] = implode("", $word);
+            }
+        endforeach;     
+        
+        return $matchedWords;
+    }
+    
+    public function lineByLineImproved($anagramSeed) {
+        
+        $fileinfo = new \SplFileInfo(RESOURCE.'wordlist.txt');
+        $file = $fileinfo->openFile('r');
+                
+        $matchedWords = array();
+        
+        $anagramSeedLength = strlen($anagramSeed);
+        $anagramSeedAsArray = str_split($anagramSeed);
+        foreach($file as $line):
+            $line = trim($line);
+            if(strlen($line) == 0 || strlen($line) > $anagramSeedLength || $line == $anagramSeed){
+                continue;
+            }
+        
+            $word = str_split($line);           
+            $matchedLetters = 0;
+            $letterPool = $anagramSeedAsArray;
+            
+            foreach($word as $key=>$letter):
+                
+                $foundLetterKey = array_search($letter, $letterPool); 
+                
+                if($foundLetterKey !== FALSE){
+                    unset($letterPool[$foundLetterKey]);
+                    $matchedLetters++;
+                }
+            endforeach;
+            
+            if($matchedLetters == count($word)){
+                $matchedWords[] = implode("", $word);
+            }
+        endforeach;     
+        
+        return $matchedWords;
+    }
+    
+    public function preloadArray($anagramSeed) {
+        
+        $fileinfo = new \SplFileInfo(RESOURCE.'wordlist.txt');
+        $file = $fileinfo->openFile('r');
+        
+        $anagramSeedLength = strlen($anagramSeed);
+        $anagramSeedAsArray = str_split($anagramSeed);
+        
+        $wordArray = array();
+        foreach($file as $line):
+            $line = trim($line);
+            if(strlen($line) > 0 && strlen($line) <= $anagramSeedLength && $line != $anagramSeed){
+                $wordArray[] = $line;
+            }
+        endforeach;
+        
+        $matchedWords = array();
+        foreach($wordArray as $key=>$wordString):
+
+            $word = str_split($wordString);
+            $matchedLetters = 0;
+            $letterPool = $anagramSeedAsArray;
+            
+            foreach($word as $key=>$letter):
+                
+                $foundLetterKey = array_search($letter, $letterPool); 
+                
+                if($foundLetterKey !== FALSE){
+                    unset($letterPool[$foundLetterKey]);
+                    $matchedLetters++;
+                }
+            endforeach;
+            
+            if($matchedLetters == count($word)){
+                $matchedWords[] = implode("", $word);
+            }
+        endforeach;     
+        
+        return $matchedWords;
     }
 		
 }
