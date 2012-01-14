@@ -31,10 +31,9 @@ class Anagrams extends \Kata\Core\KataAbstract {
             array('ab'))
         );
         
-        //more tests to test execution time. Result word lists are too long to realistically test exact matches for
+        //more tests to test execution time. Result word lists are too long to realistically test exact matches for.
         
         /*
-    
         $testSuite->addTest(\Kata\Core\Test::build("t.ammocoetiform",
             array(), 
             array('ammocoetiform'))
@@ -98,19 +97,22 @@ class Anagrams extends \Kata\Core\KataAbstract {
         return $matchedWords;
     }
 	
-    /*
+    /**
      * Process the file line-by line. Do not load data into an array. This time with decreased duplication of work.
      * in string functions. Reduces execution time by around 1 second.
      */
     public function lineByLineImproved($anagramSeed) {
         
+        //get file
         $fileinfo = new \SplFileInfo(RESOURCE.'wordlist.txt');
         $file = $fileinfo->openFile('r');
-                
-        $matchedWords = array();
-        
+				
+        //pre-calcuate some values that must be used every iteration
         $anagramSeedLength = strlen($anagramSeed);
         $anagramSeedAsArray = str_split($anagramSeed);
+		
+        //find the words
+		$matchedWords = array();
         foreach($file as $line):
             $line = trim($line);
             if(strlen($line) == 0 || strlen($line) > $anagramSeedLength || $line == $anagramSeed){
@@ -144,12 +146,15 @@ class Anagrams extends \Kata\Core\KataAbstract {
      */
     public function preloadArray($anagramSeed) {
         
+        //get word file
         $fileinfo = new \SplFileInfo(RESOURCE.'wordlist.txt');
         $file = $fileinfo->openFile('r');
         
+        //pre-calcuate some values that must be used every iteration
         $anagramSeedLength = strlen($anagramSeed);
         $anagramSeedAsArray = str_split($anagramSeed);
         
+        //pre-load all words into an array
         $wordArray = array();
         foreach($file as $line):
             $line = trim($line);
