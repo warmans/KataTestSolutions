@@ -3,8 +3,7 @@
 namespace Kata\Katas;
 
 /**
- * Example Class with three versions of Binary Search. Only public methods are run.
- * Methods can be disabled with a @enabled: false tag in the method Doc.
+ * Solutions to Anagrams problem.
  */
 class Anagrams extends \Kata\Core\KataAbstract {
 
