@@ -112,7 +112,7 @@ class Anagrams extends \Kata\Core\KataAbstract {
         $anagramSeedAsArray = str_split($anagramSeed);
 		
         //find the words
-		$matchedWords = array();
+        $matchedWords = array();
         foreach($file as $line):
             $line = trim($line);
             if(strlen($line) == 0 || strlen($line) > $anagramSeedLength || $line == $anagramSeed){
